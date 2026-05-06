@@ -2120,7 +2120,7 @@ int AREImporter::PutRegions(DataStream* stream, const Map* map, ieDword& VertInd
 		stream->WriteDword(0); //unknown30
 		stream->WriteDword(ip->Cursor);
 		stream->WriteResRefUC(ip->Destination);
-		stream->WriteVariableUC(ip->EntranceName);
+		stream->WriteVariable(ip->EntranceName);
 		stream->WriteDword(ip->Flags);
 		stream->WriteStrRef(ip->StrRef);
 		stream->WriteWord(ip->TrapDetectionDiff);
@@ -2131,7 +2131,7 @@ int AREImporter::PutRegions(DataStream* stream, const Map* map, ieDword& VertInd
 		stream->WriteResRefLC(ip->KeyResRef);
 		const auto& s = ip->Scripts[0];
 		if (s) {
-			stream->WriteResRefLC(s->GetName());
+			stream->WriteResRef(s->GetName());
 		} else {
 			stream->WriteFilling(8);
 		}
@@ -2223,7 +2223,7 @@ int AREImporter::PutActors(DataStream* stream, const Map* map) const
 		stream->WriteWord(0); //more unknowns
 		stream->WriteDword(ac->appearance);
 		stream->WriteDword(ac->TalkCount);
-		stream->WriteResRefLC(ac->GetDialog());
+		stream->WriteResRef(ac->GetDialog());
 		PutScript(stream, ac, SCR_OVERRIDE);
 		PutScript(stream, ac, SCR_GENERAL);
 		PutScript(stream, ac, SCR_CLASS);
