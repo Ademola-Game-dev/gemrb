@@ -122,6 +122,7 @@ struct Entrance {
 	ieVariable Name;
 	Point Pos;
 	ieWord Face;
+	std::array<ieByte, 66> IgnoredGarbage {};
 };
 
 class GEM_EXPORT MapNote {

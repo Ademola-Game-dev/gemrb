@@ -1567,6 +1567,7 @@ Map* AREImporter::GetMap(const ResRef& resRef, bool day_or_night)
 
 	Log(MESSAGE, "AREImporter", "Loading entrances");
 	str->Seek(EntrancesOffset, GEM_STREAM_START);
+	std::array<ieByte, 66> garbage {};
 	for (ieDword i = 0; i < EntrancesCount; i++) {
 		ieVariable Name;
 		Point Pos;
@@ -1574,8 +1575,9 @@ Map* AREImporter::GetMap(const ResRef& resRef, bool day_or_night)
 		str->ReadVariable(Name);
 		str->ReadPoint(Pos);
 		str->ReadWord(Face);
-		str->Seek(66, GEM_CURRENT_POS); // just reserved bytes
+		str->ReadArray(garbage);
 		map->AddEntrance(Name, Pos, Face);
+		map->GetEntrance(i)->IgnoredGarbage = garbage;
 	}
 
 	Log(MESSAGE, "AREImporter", "Loading variables");
@@ -2297,8 +2299,7 @@ int AREImporter::PutEntrances(DataStream* stream, const Map* map) const
 		stream->WriteVariable(e->Name);
 		stream->WritePoint(e->Pos);
 		stream->WriteWord(e->Face);
-		//a large empty piece of crap
-		stream->WriteFilling(66);
+		stream->WriteArray(e->IgnoredGarbage);
 	}
 	return 0;
 }
