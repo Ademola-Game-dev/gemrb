@@ -2503,7 +2503,7 @@ int AREImporter::PutMapAmbients(DataStream* stream, const Map* map) const
 	stream->WriteResRef(map->nightAmbients.Ambient2);
 	stream->WriteDword(map->nightAmbients.AmbientVol);
 	//song flag
-	stream->WriteDword(map->reverbID);
+	stream->WriteDword(map->reverbID == EFX_PROFILE_REVERB_INVALID ? 0 : map->reverbID);
 	//lots of empty crap (15x4)
 	stream->WriteFilling(60);
 	return 0;
