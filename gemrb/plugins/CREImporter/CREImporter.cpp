@@ -2715,9 +2715,15 @@ int CREImporter::PutActor(DataStream* stream, const Actor* actor, bool chr)
 	stream->WriteDword(ItemsCount);
 	stream->WriteDword((EffectsCount + VariablesCount) ? EffectsOffset : 0);
 	stream->WriteDword(EffectsCount + VariablesCount);
-	stream->WriteResRef(actor->GetDialog(false));
-	//spells, spellbook etc
+	const ResRef dialog = actor->GetDialog(false);
+	static const ResRef noneDialog { "NONE" };
+	if (dialog.IsEmpty() && actor->creVersion == CREVersion::V1_0) {
+		stream->WriteResRef(noneDialog);
+	} else {
+		stream->WriteResRef(dialog);
+	}
 
+	// spells, spellbook etc
 	if (actor->creVersion == CREVersion::V2_2) {
 		//writing out spell page headers
 		for (int type = IE_IWD2_SPELL_BARD; type < IE_IWD2_SPELL_DOMAIN; type++) {
