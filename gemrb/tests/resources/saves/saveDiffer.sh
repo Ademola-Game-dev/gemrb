@@ -47,11 +47,13 @@ for file in "${files[@]}"; do
     echo "Unpacking and inspecting $baseGame.sav, this can take a while."
     # unpack SAV then iterate the contents
     mkdir -p "$base1/sav" "$base2/sav"
+    a=$(find "$base1" -type f -iname "$baseGame.sav")
+    b=$(find "$base2" -type f -iname "$baseGame.sav")
     cd "$base1/sav"
-    "${IEDIFF%/*}"/iezip -q -x "$base1/$baseGame.sav"
+    "${IEDIFF%/*}"/iezip -q -x "$a"
     cd -
     cd "$base2/sav"
-    "${IEDIFF%/*}"/iezip -q -x "$base2/$baseGame.sav"
+    "${IEDIFF%/*}"/iezip -q -x "$b"
     cd -
     for subPath in "$base1/sav"/*; do
       subFile="${subPath##*/}"
