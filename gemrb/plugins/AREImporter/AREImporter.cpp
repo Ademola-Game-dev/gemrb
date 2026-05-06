@@ -658,6 +658,7 @@ void AREImporter::GetInfoPoint(DataStream* str, int idx, Map* map) const
 		ip = map->TMap->AddInfoPoint(ipName, ipType, poly);
 	}
 
+	ip->OriginalName = ipName;
 	ip->TrapDetectionDiff = trapDetDiff;
 	ip->TrapRemovalDiff = trapRemDiff;
 	ip->Trapped = trapped;
@@ -2103,7 +2104,7 @@ int AREImporter::PutRegions(DataStream* stream, const Map* map, ieDword& VertInd
 	for (unsigned int i = 0; i < InfoPointsCount; i++) {
 		const InfoPoint* ip = map->TMap->GetInfoPoint(i);
 
-		stream->WriteVariable(ip->GetScriptName());
+		stream->WriteVariable(ip->GetOriginalName());
 		//this is a hack, we abuse a coincidence
 		//ST_PROXIMITY = 1, ST_TRIGGER = 2, ST_TRAVEL = 3
 		//translates to trap = 0, info = 1, travel = 2
