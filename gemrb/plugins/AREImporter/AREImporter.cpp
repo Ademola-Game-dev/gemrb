@@ -2144,11 +2144,14 @@ int AREImporter::PutRegions(DataStream* stream, const Map* map, ieDword& VertInd
 		} else {
 			stream->WriteFilling(36); //unknown
 		}
-		//these are probably only in PST
-		stream->WriteResRef(ip->EnterWav);
-		stream->WritePoint(ip->TalkPos);
-		stream->WriteStrRef(ip->DialogName);
-		stream->WriteResRef(ip->GetDialog());
+		if (core->HasFeature(GFFlags::INFOPOINT_DIALOGS)) {
+			stream->WriteResRef(ip->EnterWav);
+			stream->WritePoint(ip->TalkPos);
+			stream->WriteStrRef(ip->DialogName);
+			stream->WriteResRef(ip->GetDialog());
+		} else {
+			stream->WriteFilling(24);
+		}
 	}
 	return 0;
 }
